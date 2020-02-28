@@ -38,6 +38,15 @@ public abstract class PlaceDatabase extends RoomDatabase {
         db.placeDao().insertPlaces(placeList);
     }
 
+    public static void deletePlace(Context context, Places.Place place){
+        PlaceDatabase db= PlaceDatabase.getInstance(context);
+
+        Place dbPlace = db.placeDao().getPlace(place.Address);
+
+        db.placeDao().deletePlace(dbPlace);
+    }
+
+
     public static ArrayList<Places.Place> getPlaces(Context context){
         PlaceDatabase db= PlaceDatabase.getInstance(context);
 

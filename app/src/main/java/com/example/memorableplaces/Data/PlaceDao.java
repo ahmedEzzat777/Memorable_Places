@@ -13,6 +13,9 @@ import java.util.List;
 public interface PlaceDao {
     @Query("SELECT * FROM places")
     List<Place> getPlaceList();
+    @Query("SELECT * FROM places WHERE Address = :address LIMIT 1")
+    Place getPlace(String address);
+
     @Insert
     public void insertPlace(Place place);
     @Insert

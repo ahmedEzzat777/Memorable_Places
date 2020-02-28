@@ -8,6 +8,7 @@ import com.example.memorableplaces.Model.Places;
 
 public class MainDbTask extends AsyncTask<MainDbTask.Operation,Void,Void> {
 
+    private Places.Place m_placeToDelete;
     private Context m_context;
     private PlacesAdapter m_adapter;
     private Places m_places;
@@ -18,15 +19,26 @@ public class MainDbTask extends AsyncTask<MainDbTask.Operation,Void,Void> {
         m_context = context;
     }
 
+    public MainDbTask(Context context, Places places, PlacesAdapter adapter,Places.Place placeToDelete){
+        m_places = places;
+        m_adapter = adapter;
+        m_context = context;
+        m_placeToDelete = placeToDelete;
+    }
+
+
     @Override
     protected Void doInBackground(Operation... op) {
         switch (op[0]){
             case Save:
-                m_places.postPlaces(m_context);
+                new PlacesDbController(m_context,m_places).postPlaces();
                 break;
             case Load:
-                m_places.loadPlaces(m_context);
-                m_adapter.notifyDataSetChanged();
+                new PlacesDbController(m_context,m_places).loadPlaces();
+                break;
+            case Delete:
+                new PlacesDbController(m_context,m_places).deletePlace(m_placeToDelete);
+                m_places.deletePlace(m_placeToDelete);
                 break;
             default:
                 break;
@@ -35,8 +47,15 @@ public class MainDbTask extends AsyncTask<MainDbTask.Operation,Void,Void> {
         return null;
     }
 
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        super.onPostExecute(aVoid);
+        m_adapter.notifyDataSetChanged();
+    }
+
     public enum Operation{
         Save,
-        Load
+        Load,
+        Delete
     }
 }

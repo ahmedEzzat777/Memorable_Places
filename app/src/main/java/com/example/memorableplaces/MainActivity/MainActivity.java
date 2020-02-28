@@ -45,5 +45,7 @@ public class MainActivity extends AppCompatActivity {
     public void addPlaces(View view){
         new MainDbTask(this,m_placesModel, m_placesAdapter).execute(Save);
     }
-
+    public void deletePlace(Places.Place place){ //called from recycleradapter
+        new MainDbTask(this,m_placesModel, m_placesAdapter,place).execute(Delete);
+    }
 }

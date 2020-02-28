@@ -25,35 +25,32 @@ public class Places implements Serializable {
     public ArrayList<Place> getPlaces(){
         return _places;
     }
-    public void loadPlaces(Context context){
-        //_places.clear();
-        _places.addAll(PlaceDatabase.getPlaces(context));
-    }
-    public void postPlaces(Context context){
-        Places newPlaces = new Places();
-        for (Place p :_places){
-            if(p.NewFlag){
-                newPlaces.addPlace(p.Address,new LatLng(p.Lat,p.Long));
+
+    public void deletePlace(Place placeToDelete) {
+        for (Places.Place p :_places){
+            if(p == placeToDelete){
+                _places.remove(p);
+                break;
             }
         }
-        PlaceDatabase.addPlaces(context,newPlaces);
     }
+
     public class Place implements Serializable{
         public String Address;
         public double Lat;
         public double Long;
-        public boolean NewFlag;
+        public boolean Modified;
         public Place(String address,LatLng latLng){
             Address = address;
             Lat = latLng.latitude;
             Long = latLng.longitude;
-            NewFlag = true;
+            Modified = true;
         }
-        public Place(String address,LatLng latLng,boolean newFlag){
+        public Place(String address,LatLng latLng,boolean modified){
             Address = address;
             Lat = latLng.latitude;
             Long = latLng.longitude;
-            NewFlag = newFlag;
+            Modified = modified;
         }
 
     }

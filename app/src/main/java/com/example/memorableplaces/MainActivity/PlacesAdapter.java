@@ -6,12 +6,14 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.memorableplaces.Data.MainDbTask;
 import com.example.memorableplaces.MapsActivity.MapsActivity;
 import com.example.memorableplaces.Model.Places;
 import com.example.memorableplaces.R;
@@ -40,6 +42,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlacesView
         if(position == getItemCount()-1) {
             holder.textView.setText("Add Places");
             holder.textView.setTextColor(Color.GREEN);
+            holder.deleteBtn.setVisibility(View.INVISIBLE);
             holder.parentLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -63,6 +66,17 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlacesView
                     _activity.startActivityForResult(intent,1);
                 }
             });
+            if(!_places.get(position).Modified) {
+                holder.deleteBtn.setVisibility(View.VISIBLE);
+                holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ((MainActivity) _activity).deletePlace(_places.get(i));
+                    }
+                });
+            } else{
+                holder.deleteBtn.setVisibility(View.INVISIBLE);
+            }
         }
     }
 
@@ -75,10 +89,12 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlacesView
     public class PlacesViewHolder extends RecyclerView.ViewHolder{
         ConstraintLayout parentLayout;
         TextView textView;
+        ImageView deleteBtn;
         public PlacesViewHolder(@NonNull View itemView) {
             super(itemView);
             parentLayout = itemView.findViewById(R.id.placeParentaLayout);
             textView = itemView.findViewById(R.id.placeTextView);
+            deleteBtn = itemView.findViewById(R.id.deleteBtn);
         }
     }
 }
