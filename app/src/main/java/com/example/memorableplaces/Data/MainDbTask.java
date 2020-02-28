@@ -6,13 +6,13 @@ import android.os.AsyncTask;
 import com.example.memorableplaces.MainActivity.PlacesAdapter;
 import com.example.memorableplaces.Model.Places;
 
-public class DbTask extends AsyncTask<DbTask.Operation,Void,Void> {
+public class MainDbTask extends AsyncTask<MainDbTask.Operation,Void,Void> {
 
     private Context m_context;
     private PlacesAdapter m_adapter;
     private Places m_places;
 
-    public DbTask(Context context, Places places, PlacesAdapter adapter){
+    public MainDbTask(Context context, Places places, PlacesAdapter adapter){
         m_places = places;
         m_adapter = adapter;
         m_context = context;

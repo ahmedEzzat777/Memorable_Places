@@ -8,11 +8,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.memorableplaces.Data.DbTask;
+import com.example.memorableplaces.Data.MainDbTask;
 import com.example.memorableplaces.Model.Places;
 import com.example.memorableplaces.R;
 
-import static com.example.memorableplaces.Data.DbTask.Operation.*;
+import static com.example.memorableplaces.Data.MainDbTask.Operation.*;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         placesView.setAdapter(m_placesAdapter);
         placesView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         //TODO::load from db here
-        new DbTask(this,m_placesModel, m_placesAdapter).execute(Load);
+        new MainDbTask(this,m_placesModel, m_placesAdapter).execute(Load);
 
     }
 
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void addPlaces(View view){
-        new DbTask(this,m_placesModel, m_placesAdapter).execute(Save);
+        new MainDbTask(this,m_placesModel, m_placesAdapter).execute(Save);
     }
 
 }
