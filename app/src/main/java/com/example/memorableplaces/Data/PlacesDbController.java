@@ -16,7 +16,7 @@ public class PlacesDbController{
 
     public void loadPlaces(){
         //_places.clear();
-        m_places.getPlaces().addAll(PlaceDatabase.getPlaces(m_context));
+        m_places.getPlaces().addAll(Place.getPlaces(m_context));
     }
     public void postPlaces(){
         Places newPlaces = new Places();
@@ -26,16 +26,15 @@ public class PlacesDbController{
                 p.Modified = false;
             }
         }
-        PlaceDatabase.addPlaces(m_context,newPlaces);
+        Place.addPlaces(m_context,newPlaces);
     }
     public void deletePlace(Places.Place placeToDelete){
         Places newPlaces = new Places();
         for (Places.Place p :m_places.getPlaces()){
             if(p == placeToDelete){
-                PlaceDatabase.deletePlace(m_context,p);
+                Place.deletePlace(m_context,p);
                 break;
             }
         }
     }
-
 }
