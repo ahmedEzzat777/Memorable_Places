@@ -13,7 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.memorableplaces.Data.MainDbTask;
 import com.example.memorableplaces.MapsActivity.MapsActivity;
 import com.example.memorableplaces.Model.Places;
 import com.example.memorableplaces.R;
@@ -22,19 +21,18 @@ import java.util.ArrayList;
 
 public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlacesViewHolder> {
     private Activity _activity;
-    private ArrayList<Places.Place> _places;
+    private ArrayList<Places.Place> m_places;
 
     public PlacesAdapter(Activity context, ArrayList<Places.Place> places)
     {
         _activity = context;
-        _places = places;
+        m_places = places;
     }
     @NonNull
     @Override
     public PlacesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_place,parent,false);
-        PlacesViewHolder placesViewHolder = new PlacesViewHolder(v);
-        return placesViewHolder;
+        return new PlacesViewHolder(v);
     }
 
     @Override
@@ -52,26 +50,26 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlacesView
                 }
             });
         } else {
-            holder.textView.setText(_places.get(position).Address);
+            holder.textView.setText(m_places.get(position).Address);
             holder.textView.setTextColor(Color.BLUE);
             final int i = position;
             holder.parentLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(_activity, MapsActivity.class);
-                    intent.putExtra("lat",_places.get(i).Lat);
-                    intent.putExtra("long",_places.get(i).Long);
-                    intent.putExtra("address",_places.get(i).Address);
+                    intent.putExtra("lat", m_places.get(i).Lat);
+                    intent.putExtra("long", m_places.get(i).Long);
+                    intent.putExtra("address", m_places.get(i).Address);
                     //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     _activity.startActivityForResult(intent,1);
                 }
             });
-            if(!_places.get(position).Modified) {
+            if(!m_places.get(position).Modified) {
                 holder.deleteBtn.setVisibility(View.VISIBLE);
                 holder.deleteBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ((MainActivity) _activity).deletePlace(_places.get(i));
+                        ((MainActivity) _activity).deletePlace(m_places.get(i));
                     }
                 });
             } else{
@@ -82,7 +80,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlacesView
 
     @Override
     public int getItemCount() {
-        return _places.size()+1;
+        return m_places.size()+1;
     }
 
 
