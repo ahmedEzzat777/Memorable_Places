@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     public Places m_placesModel;
     PlacesAdapter m_placesAdapter;
     PlacesDbController m_placesDbController;
-    static AsyncDbTask m_asyncDbTask;
+    AsyncDbTask m_asyncDbTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
