@@ -22,7 +22,7 @@ public class PlacesDbController{
         Places newPlaces = new Places();
         for (Places.Place p :m_places.getPlaces()){
             if(p.Modified){
-                newPlaces.addPlace(p.Address,new LatLng(p.Lat,p.Long));
+                newPlaces.addPlace(p.Address,new LatLng(p.Lat,p.Long),false);
                 p.Modified = false;
             }
         }

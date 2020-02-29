@@ -32,6 +32,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Places m_places;
     private LocationManager m_locationManager;
     private LocationListener m_locationListener;
+    private boolean m_loadRestoredMarkers;
 
 
     @Override
@@ -41,12 +42,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        if(mapFragment != null){
+            mapFragment.getMapAsync(this);
+        }
+        m_places = new Places();
+        m_loadRestoredMarkers = false;
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         m_Map = googleMap;
+
+        restoreMarkersAfterRotation();
 
         getCurrentLocation();
 
@@ -109,8 +116,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void getSavedLocation() {
-        Double currLat = getIntent().getDoubleExtra("lat",0);
-        Double currLong = getIntent().getDoubleExtra("long",0);
+        double currLat = getIntent().getDoubleExtra("lat",0);
+        double currLong = getIntent().getDoubleExtra("long",0);
         LatLng currLatLang = new LatLng(currLat,currLong);
         String currAddress = getIntent().getStringExtra("address");
         if( currAddress != null){
@@ -121,31 +128,53 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void SetMemorableLocationSaver() {
-        m_places = new Places();
-        m_Map.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
-            @Override
-            public void onMapLongClick(LatLng latLng) {
-                Geocoder geocoder = new Geocoder(getApplicationContext());
-                Address locationAddress = null;
-                String locationAddressStr = "";
-                try {
-                    locationAddress = geocoder.getFromLocation(latLng.latitude,latLng.longitude,1).get(0);
-                    if(locationAddress.getCountryName()!=null)
-                        locationAddressStr += locationAddress.getCountryName();
-                    if(locationAddress.getAdminArea()!=null)
-                        locationAddressStr += "\r\n"+locationAddress.getAdminArea();
-                    if(locationAddress.getSubAdminArea()!=null)
-                        locationAddressStr += "\r\n"+locationAddress.getSubAdminArea();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                if(locationAddress != null && locationAddressStr !=""){
-                    m_places.addPlace(locationAddressStr,latLng);
-                    m_Map.addMarker(new MarkerOptions().position(latLng).title(locationAddressStr));
-                    m_Map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,5));
-                    Toast.makeText(MapsActivity.this,"location saved",Toast.LENGTH_SHORT).show();
-                }
+        m_Map.setOnMapLongClickListener(latLng -> {
+            Geocoder geocoder = new Geocoder(getApplicationContext());
+            Address locationAddress = null;
+            String locationAddressStr = "";
+            try {
+                locationAddress = geocoder.getFromLocation(latLng.latitude,latLng.longitude,1).get(0);
+                if(locationAddress.getCountryName()!=null)
+                    locationAddressStr += locationAddress.getCountryName();
+                if(locationAddress.getAdminArea()!=null)
+                    locationAddressStr += "\r\n"+locationAddress.getAdminArea();
+                if(locationAddress.getSubAdminArea()!=null)
+                    locationAddressStr += "\r\n"+locationAddress.getSubAdminArea();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if(locationAddress != null && !locationAddressStr.equals("")){
+                m_places.addPlace(locationAddressStr,latLng);
+                m_Map.addMarker(new MarkerOptions().position(latLng).title(locationAddressStr));
+                m_Map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,5));
+                Toast.makeText(MapsActivity.this,"location saved",Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("places",m_places);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        m_places = (Places)(savedInstanceState.getSerializable("places"));
+        if(m_places==null){
+            return;
+        }
+        if(m_places.getPlaces().size()>0){
+            m_loadRestoredMarkers = true;
+        }
+    }
+
+    private void restoreMarkersAfterRotation() {
+        if(m_loadRestoredMarkers) {
+            for (Places.Place p : m_places.getPlaces()) {
+                m_Map.addMarker(new MarkerOptions().position(new LatLng(p.Lat, p.Long)).title(p.Address));
+            }
+        }
     }
 }

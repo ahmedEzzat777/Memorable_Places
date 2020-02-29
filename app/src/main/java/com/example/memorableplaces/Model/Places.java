@@ -1,35 +1,35 @@
 package com.example.memorableplaces.Model;
 
-import android.content.Context;
-
-import com.example.memorableplaces.Data.PlaceDatabase;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Places implements Serializable {
-    ArrayList<Place> _places;
+    private ArrayList<Place> m_places;
     public Places(){
-        _places = new ArrayList<Place>();
+        m_places = new ArrayList<>();
     }
     public void addPlace(String address, LatLng latLng){
-        _places.add(new Place(address,latLng));
+        m_places.add(new Place(address,latLng));
     }
     public void addPlace(String address, LatLng latLng,boolean newFlag){
-        _places.add(new Place(address,latLng,newFlag));
+        m_places.add(new Place(address,latLng,newFlag));
     }
     public void addPlaces(Places places){
-        _places.addAll(places.getPlaces());
+        m_places.addAll(places.getPlaces());
     }
     public ArrayList<Place> getPlaces(){
-        return _places;
+        return m_places;
     }
-
+    public void setPlaces(ArrayList<Places.Place> places){
+        m_places.clear();
+        m_places.addAll(places);
+    }
     public void deletePlace(Place placeToDelete) {
-        for (Places.Place p :_places){
+        for (Places.Place p : m_places){
             if(p == placeToDelete){
-                _places.remove(p);
+                m_places.remove(p);
                 break;
             }
         }
