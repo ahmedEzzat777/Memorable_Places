@@ -1,4 +1,4 @@
-package com.example.memorableplaces.MapsActivity;
+package com.example.memorableplaces.UI.MapsActivity;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;

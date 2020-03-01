@@ -1,4 +1,4 @@
-package com.example.memorableplaces.MainActivity;
+package com.example.memorableplaces.UI.MainActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.memorableplaces.Data.AsyncDbTask;
-import com.example.memorableplaces.Data.PlacesDbController;
+import com.example.memorableplaces.Data.ModelDbController.PlacesDbController;
 import com.example.memorableplaces.Model.Places;
 import com.example.memorableplaces.R;
 

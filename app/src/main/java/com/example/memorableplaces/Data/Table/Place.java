@@ -1,4 +1,4 @@
-package com.example.memorableplaces.Data;
+package com.example.memorableplaces.Data.Table;
 
 import android.content.Context;
 
@@ -7,6 +7,7 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.example.memorableplaces.Data.PlaceDatabase;
 import com.example.memorableplaces.Model.Places;
 import com.google.android.gms.maps.model.LatLng;
 

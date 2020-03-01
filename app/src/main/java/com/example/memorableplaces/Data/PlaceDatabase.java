@@ -5,6 +5,10 @@ import android.content.Context;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+
+import com.example.memorableplaces.Data.Dao.PlaceDao;
+import com.example.memorableplaces.Data.Table.Place;
+
 @Database(entities = Place.class,exportSchema = false,version = 1)
 public abstract class PlaceDatabase extends RoomDatabase {
     private static final String DB_NAME ="Places_db";

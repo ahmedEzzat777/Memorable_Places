@@ -1,7 +1,8 @@
-package com.example.memorableplaces.Data;
+package com.example.memorableplaces.Data.ModelDbController;
 
 import android.content.Context;
 
+import com.example.memorableplaces.Data.Table.Place;
 import com.example.memorableplaces.Model.Places;
 import com.google.android.gms.maps.model.LatLng;
 

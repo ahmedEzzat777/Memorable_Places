@@ -1,4 +1,4 @@
-package com.example.memorableplaces.MainActivity;
+package com.example.memorableplaces.UI.MainActivity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.memorableplaces.MapsActivity.MapsActivity;
+import com.example.memorableplaces.UI.MapsActivity.MapsActivity;
 import com.example.memorableplaces.Model.Places;
 import com.example.memorableplaces.R;
 
