@@ -33,17 +33,22 @@ public class MainActivity extends AppCompatActivity {
         m_placesAdapter = new PlacesAdapter(MainActivity.this, m_placesModel);
         placesView.setAdapter(m_placesAdapter);
         placesView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        m_asyncDbTask = new AsyncDbTask(){
-            @Override
-            protected void doInBackground() {
-                m_placesDbController.loadPlaces();
-            }
 
-            @Override
-            protected void onPostExecute() {
-                m_placesAdapter.notifyDataSetChanged();
-            }
-        };
+        if(savedInstanceState != null){
+            restoreInstanceState(savedInstanceState);
+        } else {
+            m_asyncDbTask = new AsyncDbTask() {
+                @Override
+                protected void doInBackground() {
+                    m_placesDbController.loadPlaces();
+                }
+
+                @Override
+                protected void onPostExecute() {
+                    m_placesAdapter.notifyDataSetChanged();
+                }
+            };
+        }
     }
 
     @Override
@@ -76,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             protected void doInBackground() {
                 m_placesDbController.deletePlace(placeToDelete);
-                m_placesModel.deletePlace(placeToDelete);
             }
 
             @Override
@@ -99,16 +103,7 @@ public class MainActivity extends AppCompatActivity {
         outState.putSerializable("places",m_placesModel);
     }
 
-    @Override
-    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-        if(m_asyncDbTask != null) {
-            try {
-                m_asyncDbTask.get(); //wait till db thread finishes to restore previous instant
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        super.onRestoreInstanceState(savedInstanceState);
+    private void restoreInstanceState(@NonNull Bundle savedInstanceState) {
         //if we used m_placesModel =(Places)savedInstanceState.getSerializable(... it will change the refrence from
         //that in adapter making notify useless
         Places places = (Places)savedInstanceState.getSerializable("places");

@@ -34,6 +34,7 @@ public class PlacesDbController{
         for (Places.Place p :m_places.getPlaces()){
             if(p == placeToDelete){
                 Place.deletePlace(m_context,p);
+                m_places.getPlaces().remove(p);
                 break;
             }
         }
