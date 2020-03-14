@@ -177,4 +177,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopLocationListener();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        stopLocationListener();
+    }
+
+    private void stopLocationListener() {
+        if (m_locationManager !=null) m_locationManager.removeUpdates(m_locationListener);
+        if (m_locationManager !=null) m_locationManager =null;
+        if (m_locationListener !=null) m_locationListener =null;
+    }
+
 }

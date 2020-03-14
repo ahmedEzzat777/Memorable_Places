@@ -2,25 +2,29 @@ package com.example.memorableplaces.Data;
 
 import android.os.AsyncTask;
 
-//this class is just to simplify async task
-public abstract class AsyncDbTask extends AsyncTask<Void,Void,Void> {
+import needle.Needle;
+import needle.UiRelatedProgressTask;
+import needle.UiRelatedTask;
+
+public abstract class AsyncDbTask{
 
     public AsyncDbTask(){
-        execute();
-    }
-    @Override
-    protected Void doInBackground(Void... voids) {
-        doInBackground();
-        return null;
+        Needle.onBackgroundThread().execute(new UiRelatedTask<Void>() {
+            @Override
+            protected Void doWork() {
+                doInBackground();
+                return null;
+            }
+
+            @Override
+            protected void thenDoUiRelatedWork(Void v) {
+                onPostExecute();
+            }
+        });
     }
 
     protected abstract void doInBackground();
 
-    @Override
-    protected void onPostExecute(Void aVoid) {
-        super.onPostExecute(aVoid);
-        onPostExecute();
-    }
 
     protected abstract void onPostExecute();
 

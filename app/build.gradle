@@ -47,5 +47,7 @@ dependencies {
     implementation 'android.arch.persistence.room:runtime:1.1.1'
     annotationProcessor 'android.arch.persistence.room:compiler:1.1.1'
     implementation 'com.google.android.material:material:1.1.0'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.2'
+    implementation 'com.zsoltsafrany:needle:1.0.0'
 
 }
